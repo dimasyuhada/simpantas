@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PolaSekuensActivity">
+
+    <TextView
+        android:id="@+id/tvTahun3"
+        android:layout_width="87dp"
+        android:layout_height="29dp"
+        android:text="@string/kejadian"
+        android:textAlignment="textStart"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="108dp"
+        android:layout_gravity="start" />
+
+    <Spinner
+        android:id="@+id/spinnerSupp"
+        android:layout_width="269dp"
+        android:layout_height="29dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="107dp"
+        tools:layout_editor_absoluteY="108dp" />
+
+    <TextView
+        android:id="@+id/tvTahun2"
+        android:layout_width="87dp"
+        android:layout_height="29dp"
+        android:text="@string/title_tahun_data"
+        android:textAlignment="textStart"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="62dp"
+        android:layout_gravity="start" />
+
+    <Spinner
+        android:id="@+id/spinnerTahun"
+        android:layout_width="269dp"
+        android:layout_height="29dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="107dp"
+        tools:layout_editor_absoluteY="62dp" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_sekuens"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="97dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/btnOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/proses"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="160dp"
+        tools:ignore="MissingConstraints" />
+</android.support.constraint.ConstraintLayout>

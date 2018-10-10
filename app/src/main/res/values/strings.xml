@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">simpantas</string>
+    <string name="input_titik">Input Titik</string>
+    <string name="pola_sekuens">pola sekuens</string>
+    <string name="visualisasi_titik">visualisasi titik</string>
+    <string name="title_input_titik">INPUT TITIK</string>
+    <string name="title_tahun_data">Tahun Data :</string>
+    <string name="title_upload_fail">Upload Fail :</string>
+    <string name="choose_file">Choose File :</string>
+    <string name="file_name">File Name</string>
+    <string name="title_sekuens">POLA SEKUENS TITIK PANAS</string>
+    <string name="kejadian">Kejadian :</string>
+    <string name="proses">Proses</string>
+    <string name="title_activity_visualisasi">Map</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="btn_proecss">Process</string>
+</resources>
