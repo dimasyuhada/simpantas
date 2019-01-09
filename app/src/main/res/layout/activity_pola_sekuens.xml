@@ -1,68 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PolaSekuensActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/tvTahun3"
-        android:layout_width="87dp"
-        android:layout_height="29dp"
-        android:text="@string/kejadian"
-        android:textAlignment="textStart"
-        android:textStyle="bold"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="108dp"
-        android:layout_gravity="start" />
-
-    <Spinner
-        android:id="@+id/spinnerSupp"
-        android:layout_width="269dp"
-        android:layout_height="29dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="108dp" />
-
-    <TextView
-        android:id="@+id/tvTahun2"
-        android:layout_width="87dp"
-        android:layout_height="29dp"
-        android:text="@string/title_tahun_data"
-        android:textAlignment="textStart"
-        android:textStyle="bold"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="62dp"
-        android:layout_gravity="start" />
-
-    <Spinner
-        android:id="@+id/spinnerTahun"
-        android:layout_width="269dp"
-        android:layout_height="29dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="62dp" />
-
-    <TextView
-        android:id="@+id/title2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_sekuens"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="97dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-    <Button
-        android:id="@+id/btnOk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/proses"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="160dp"
-        tools:ignore="MissingConstraints" />
-</android.support.constraint.ConstraintLayout>
+        <!--  Name Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:id="@+id/spinnerTahun"
+                android:textAlignment="center"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:text="blablabla">
+            </TextView>
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnTransform"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/colorPrimaryDark"
+            android:padding="12dp"
+            android:textColor="#fff"
+            android:text="@string/strTransform"/>
+
+    </LinearLayout>
+</ScrollView>

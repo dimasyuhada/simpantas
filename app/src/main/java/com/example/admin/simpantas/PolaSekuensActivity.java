@@ -1,5 +1,6 @@
 package com.example.admin.simpantas;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,45 +8,48 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
-public class PolaSekuensActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+import ca.pfv.spmf.algorithms.sequentialpatterns.clasp_AGP.idlists.creators.IdListCreator;
+import ca.pfv.spmf.algorithms.sequentialpatterns.gsp_AGP.items.SequenceDatabase;
+import ca.pfv.spmf.algorithms.sequentialpatterns.gsp_AGP.items.creators.AbstractionCreator;
+import ca.pfv.spmf.algorithms.sequentialpatterns.gsp_AGP.items.creators.AbstractionCreator_Qualitative;
+import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.candidatePatternsGeneration.CandidateGenerator;
+import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.candidatePatternsGeneration.CandidateGenerator_Qualitative;
+import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.idLists.creators.IdListCreator_FatBitmap;
+import ca.pfv.spmf.algorithms.sequentialpatterns.spam.Candidate;
 
-    String[] years={"2015","2016","2017","2018"};
-    String[] support={"1","2","3","4"};
+public class PolaSekuensActivity extends AppCompatActivity{
 
-    Button btnOk;
-    Spinner spinnerTahun, spinnerSupport;
+    Button btnTransform;
+    Spinner spinnerTahun;
+    TextView csvName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pola_sekuens);
 
-        spinnerTahun = (Spinner) findViewById(R.id.spinnerTahun);
-        spinnerSupport = (Spinner) findViewById(R.id.spinnerSupp);
-        btnOk = (Button) findViewById(R.id.btnOk);
 
-        spinnerTahun.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        ArrayAdapter<String> aa = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,years);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTahun.setAdapter(aa);
+        btnTransform = (Button) findViewById(R.id.btnTransform);
 
-        spinnerSupport.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        ArrayAdapter<String> bb = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,support);
-        bb.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTahun.setAdapter(bb);
+        Bundle bundle = getIntent().getExtras();
+        String titleCsv = bundle.getString("csv") + ".csv";
 
-        btnOk.setOnClickListener(new View.OnClickListener() {
+        csvName.setText(titleCsv);
+
+        btnTransform.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //PROSES POLA TITIK PANAS DISINI
+                transformData();
             }
         });
 
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    private void transformData() {
+
 
     }
 }

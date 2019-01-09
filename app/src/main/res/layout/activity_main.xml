@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context=".MainActivity">
 
     <RelativeLayout
         android:id="@+id/top_buttons"
+        android:layout_weight="2"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
@@ -16,39 +20,48 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_width="224dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="@string/input_titik"
-            android:layout_above="@id/button2"
+            android:text="HISTORICAL DATA"
+            android:layout_above="@id/buttonX"
             android:layout_centerInParent="true"
             tools:layout_editor_absoluteX="80dp"
             tools:layout_editor_absoluteY="57dp"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:layout_marginBottom="10sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#fff"/>
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="224dp"
+            android:id="@+id/buttonX"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="@string/pola_sekuens"
+            android:text="TEST JSON"
             android:layout_above="@id/button3"
             android:layout_centerInParent="true"
             tools:layout_editor_absoluteX="80dp"
-            tools:layout_editor_absoluteY="121dp"
-            tools:ignore="MissingConstraints" />
+            tools:layout_editor_absoluteY="57dp"
+            tools:ignore="MissingConstraints"
+            android:layout_marginBottom="10sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#fff"/>
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="224dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="@string/visualisasi_titik"
+            android:text="REALTIME HOTSPOT"
             android:layout_centerInParent="true"
             tools:layout_editor_absoluteX="80dp"
             tools:layout_editor_absoluteY="180dp"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#fff"/>
 
     </RelativeLayout>
 
 
 
 
-</android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

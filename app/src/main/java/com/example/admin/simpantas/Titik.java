@@ -2,14 +2,45 @@ package com.example.admin.simpantas;
 
 public class Titik {
     private double latitude, longitude;
-    private Integer unixDate, unixTime;
+    private int unixDateTime, unixDate;
     private String tanggal,provinsi, kabupaten, kecamatan, desa;
 
-    public Titik() {
+    public static final String TABLE_NAME = "Titik";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_LATITUDE = "latitude";
+    public static final String COLUMN_LONGITUDE = "longitude";
+    public static final String COLUMN_UNIXDATE = "unixdate";
+    public static final String COLUMN_UNIXDATETIME = "unixdatetime";
+    public static final String COLUMN_TANGGAL = "tanggal";
+    public static final String COLUMN_PROVINSI = "provinsi";
+    public static final String COLUMN_KABUPATEN = "kabupaten";
+    public static final String COLUMN_KECAMATAN = "kecamatan";
+    public static final String COLUMN_DESA = "desa";
+
+    public static final String CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + "("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_LATITUDE + " DOUBLE,"
+                    + COLUMN_LONGITUDE + " DOUBLE,"
+                    + COLUMN_UNIXDATE + " INTEGER,"
+                    + COLUMN_UNIXDATETIME + " INTEGER,"
+                    + COLUMN_TANGGAL + " TEXT,"
+                    + COLUMN_PROVINSI + " TEXT,"
+                    + COLUMN_KABUPATEN + " TEXT,"
+                    + COLUMN_KECAMATAN + " TEXT,"
+                    + COLUMN_DESA + " TEXT"
+                    + ")";
+
+    public Titik()
+    {
+
+    }
+
+    public Titik(double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String provinsi, String kabupaten, String kecamatan, String desa) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.unixDate = unixDate;
-        this.unixTime = unixTime;
+        this.unixDateTime = unixDateTime;
         this.tanggal = tanggal;
         this.provinsi = provinsi;
         this.kabupaten = kabupaten;
@@ -33,20 +64,20 @@ public class Titik {
         this.longitude = longitude;
     }
 
-    public Integer getUnixDate() {
+    public int getUnixDate() {
         return unixDate;
     }
 
-    public void setUnixDate(Integer unixDate) {
+    public void setUnixDate(int unixDate) {
         this.unixDate = unixDate;
     }
 
-    public Integer getUnixTime() {
-        return unixTime;
+    public int getUnixDateTime() {
+        return unixDateTime;
     }
 
-    public void setUnixTime(Integer unixTime) {
-        this.unixTime = unixTime;
+    public void setUnixDateTime(int unixDateTime) {
+        this.unixDateTime = unixDateTime;
     }
 
     public String getTanggal() {

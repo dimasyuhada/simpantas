@@ -4,6 +4,10 @@
     package="com.example.admin.simpantas">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!--
@@ -51,8 +55,9 @@
         <activity
             android:name=".VisualisasiActivity"
             android:label="@string/title_activity_visualisasi" />
+        <activity android:name=".ProcessTitikActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ProcessTitikActivity"></activity>
+        <activity android:name=".RealtimeActivity" />
     </application>
 
 </manifest>

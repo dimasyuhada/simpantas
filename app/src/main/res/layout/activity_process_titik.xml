@@ -1,9 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ProcessTitikActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+        <!--  Name Label -->
+        <TextView
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:paddingBottom="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="@string/realtime_hotspot">
+        </TextView>
+
+        <TextView
+            android:id="@+id/resultInput"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:paddingBottom="20dp"
+            android:textStyle="italic"
+            android:textColor="@color/colorAccent"
+            android:textSize="10sp"
+            android:text="result input"
+            tools:ignore="SpUsage" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnInput"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/input_data"
+            android:textColor="#fff" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnVisualisasi"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:padding="12dp"
+            android:textColor="#fff"
+            android:text="@string/visualisasi_titik"/>
+
+
+        <!-- Signup Button -->
+
+
+    </LinearLayout>
+</ScrollView>
