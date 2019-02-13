@@ -67,6 +67,12 @@ public class ProcessTitikActivity extends AppCompatActivity implements Serializa
             }
         });
     }
+    private void processQuerySequence() {
+        //hpListDB.addAll(db.getAllHotspot());
+        Intent i = new Intent(ProcessTitikActivity.this, VisualisasiActivity.class);
+        i.putExtra("resultObject", (Serializable) hpListView);
+        startActivity(i);
+    }
 
     private void inputDummy(double lat, double lng, int conf, String kws, String tgl, String kec, String kab, int tmp) {
         boolean result = db.insertHotspot(lat,lng,conf,kws,tgl,kec,kab,tmp);
@@ -87,14 +93,6 @@ public class ProcessTitikActivity extends AppCompatActivity implements Serializa
             Log.d("Input Hotspot BARU","Error: "+result);
         }
     }
-
-    private void processQuerySequence() {
-        //hpListDB.addAll(db.getAllHotspot());
-        Intent i = new Intent(ProcessTitikActivity.this, VisualisasiActivity.class);
-        i.putExtra("resultObject", (Serializable) hpListView);
-        startActivity(i);
-    }
-
 
     private class GetQuery extends AsyncTask<Void, Void, Void> {
         @Override

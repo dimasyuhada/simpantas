@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String value = "key";
     SharedPreferences sharedPreferences;
 
-    Button inputButton, sekuensButton, visualButton;
+    Button inputButton, visualButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,25 +26,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         inputButton = (Button) findViewById(R.id.button);
-        sekuensButton = (Button) findViewById(R.id.buttonX);
         visualButton = (Button) findViewById(R.id.button3);
 
         inputButton.setOnClickListener(this);
         visualButton.setOnClickListener(this);
 
         //BUAT CEK APAKAH INSTALL PERTAMA
-        checkInit();
+        //makeFolder();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void checkInit() {
+    private void makeFolder() {
         //KALO INSTALL PERTAMA, BUAT DITEKTORI UNTUK NYIMPEN FILE YANG AKAN DIPERGUNAKAN
-        File directory = new File(Environment.getExternalStorageDirectory()+"/dataHotspot");
+        String folder_simpantas = "dbSimpantas";
+        File directory = new File(Environment.getExternalStorageDirectory(),folder_simpantas);
         if(!directory.exists()){
             directory.mkdir();
         }
-        File newDirectory = new File("/testFolder");
-        newDirectory.mkdirs();
     }
 
     @Override
@@ -55,14 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent titik = new Intent( MainActivity.this, InputTitikActivity.class);
                 startActivity(titik);
             break;
-            case R.id.buttonX:
-                Intent visual = new Intent( MainActivity.this, VisualisasiActivity.class);
-                startActivity(visual);
-            break;
             case R.id.button3:
-                Intent realtime = new Intent( MainActivity.this, ProcessTitikActivity.class);
+                Intent realtime = new Intent( MainActivity.this, RealtimeActivity.class);
                 startActivity(realtime);
-                break;
+            break;
         }
     }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Hotspot implements Serializable{
     private double latitude, longitude;
     private int  confidence, temp;
-    private String kawasan,tanggal, kecamatan, kabupaten;
+    private String kawasan,tanggal, kecamatan, kabupaten, provinsi;
 
     public static final String TABLE_NAME_UPDATE = "HotspotUpdate";
     public static final String TABLE_NAME = "Hotspot";
@@ -17,6 +17,7 @@ public class Hotspot implements Serializable{
     public static final String COLUMN_TANGGAL = "tanggal";
     public static final String COLUMN_KECAMATAN = "kecamatan";
     public static final String COLUMN_KABUPATEN = "kabupaten";
+    public static final String COLUMN_PROVINSI = "provinsi";
     public static final String COLUMN_TEMP = "temp";
 
     public static final String CREATE_TABLE =
@@ -29,6 +30,7 @@ public class Hotspot implements Serializable{
                     + COLUMN_TANGGAL + " TEXT,"
                     + COLUMN_KECAMATAN + " TEXT,"
                     + COLUMN_KABUPATEN+ " TEXT,"
+                    + COLUMN_PROVINSI+ " TEXT,"
                     + COLUMN_TEMP+ " INTEGER"
                     + ")";
 
@@ -42,6 +44,7 @@ public class Hotspot implements Serializable{
                     + COLUMN_TANGGAL + " TEXT,"
                     + COLUMN_KECAMATAN + " TEXT,"
                     + COLUMN_KABUPATEN+ " TEXT,"
+                    + COLUMN_PROVINSI+ " TEXT,"
                     + COLUMN_TEMP+ " INTEGER"
                     + ")";
 
@@ -50,7 +53,7 @@ public class Hotspot implements Serializable{
 
     }
 
-    public Hotspot(double latitude, double longitude, int confidence,  String kawasan, String tanggal, String kecamatan, String kabupaten, int temp) {
+    public Hotspot(double latitude, double longitude, int confidence,  String kawasan, String tanggal, String kecamatan, String kabupaten, String provinsi, int temp) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.confidence = confidence;
@@ -58,6 +61,7 @@ public class Hotspot implements Serializable{
         this.tanggal = tanggal;
         this.kecamatan = kecamatan;
         this.kabupaten = kabupaten;
+        this.provinsi = provinsi;
         this.temp = temp;
     }
 
@@ -116,6 +120,14 @@ public class Hotspot implements Serializable{
 
     public void setKabupaten(String kabupaten) {
         this.kabupaten = kabupaten;
+    }
+
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
     }
 
     public int getTemp() {

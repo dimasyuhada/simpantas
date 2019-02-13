@@ -1,6 +1,8 @@
 package com.example.admin.simpantas;
 
 
+import android.os.StrictMode;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,12 +18,17 @@ public class JsonParser
 {
     private static final String TAG = JsonParser.class.getSimpleName();
 
+
+
     public JsonParser() {
     }
 
     public String getJsonData(String reqUrl){
         String response = null;
         try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -45,8 +52,9 @@ public class JsonParser
 
         String line;
         try{
-            while ((line = reader.readLine()) != null);
-            sb.append(line).append('\n');
+            while ((line = reader.readLine()) != null){
+                sb.append(line).append('\n');
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

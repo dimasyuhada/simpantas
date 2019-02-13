@@ -1,54 +1,53 @@
 package com.example.admin.simpantas;
 
-public class Titik {
+public class TitikFilter {
     private double latitude, longitude;
-    private int unixDateTime, unixDate;
-    private String tanggal,provinsi, kabupaten, kecamatan, desa, tahun;
+    private int id,unixDateTime, unixDate;
+    private String tanggal,tahun;
 
-    public static final String TABLE_NAME = "Titik";
+    public static final String TABLE_NAME = "Titikfilter";
+    public static final String COLUMN_SID = "sid";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_UNIXDATE = "unixdate";
     public static final String COLUMN_UNIXDATETIME = "unixdatetime";
     public static final String COLUMN_TANGGAL = "tanggal";
-    public static final String COLUMN_PROVINSI = "provinsi";
-    public static final String COLUMN_KABUPATEN = "kabupaten";
-    public static final String COLUMN_KECAMATAN = "kecamatan";
-    public static final String COLUMN_DESA = "desa";
     public static final String COLUMN_TAHUN = "tahun";
 
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_SID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_ID+ " INTEGER,"
                     + COLUMN_LATITUDE + " DOUBLE,"
                     + COLUMN_LONGITUDE + " DOUBLE,"
                     + COLUMN_UNIXDATE + " INTEGER,"
                     + COLUMN_UNIXDATETIME + " INTEGER,"
                     + COLUMN_TANGGAL + " TEXT,"
-                    + COLUMN_PROVINSI + " TEXT,"
-                    + COLUMN_KABUPATEN + " TEXT,"
-                    + COLUMN_KECAMATAN + " TEXT,"
-                    + COLUMN_DESA + " TEXT,"
                     + COLUMN_TAHUN + " TEXT"
                     + ")";
 
-    public Titik()
+    public TitikFilter()
     {
 
     }
 
-    public Titik(double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String provinsi, String kabupaten, String kecamatan, String desa, String tahun) {
+    public TitikFilter(int id, double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String tahun) {
+        this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.unixDate = unixDate;
         this.unixDateTime = unixDateTime;
         this.tanggal = tanggal;
-        this.provinsi = provinsi;
-        this.kabupaten = kabupaten;
-        this.kecamatan = kecamatan;
-        this.desa = desa;
         this.tahun = tahun;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double getLatitude() {
@@ -89,38 +88,6 @@ public class Titik {
 
     public void setTanggal(String tanggal) {
         this.tanggal = tanggal;
-    }
-
-    public String getProvinsi() {
-        return provinsi;
-    }
-
-    public void setProvinsi(String provinsi) {
-        this.provinsi = provinsi;
-    }
-
-    public String getKabupaten() {
-        return kabupaten;
-    }
-
-    public void setKabupaten(String kabupaten) {
-        this.kabupaten = kabupaten;
-    }
-
-    public String getKecamatan() {
-        return kecamatan;
-    }
-
-    public void setKecamatan(String kecamatan) {
-        this.kecamatan = kecamatan;
-    }
-
-    public String getDesa() {
-        return desa;
-    }
-
-    public void setDesa(String desa) {
-        this.desa = desa;
     }
 
     public String getTahun() {

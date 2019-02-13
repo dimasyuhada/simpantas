@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">simpantas</string>
     <string name="input_titik">Input Titik</string>
-    <string name="pola_sekuens">pola sekuens</string>
-    <string name="visualisasi_titik">visualisasi titik</string>
+    <string name="pola_sekuens">Pola Sekuens</string>
+    <string name="visualisasi_titik">Visualisasi Titik</string>
     <string name="title_input_titik">INPUT TITIK</string>
     <string name="title_tahun_data">Tahun Data :</string>
     <string name="title_upload_fail">Upload Fail :</string>
@@ -26,6 +26,9 @@
     <string name="strTitle">SIMPANTAS</string>
     <string name="input_data">Input Data</string>
     <string name="realtime_hotspot">REALTIME HOTSPOT</string>
+    <string name="btn_transform">Transform</string>
+    <string name="btnSpade">SPADE</string>
+    <string name="minsupHint">Input MinSup (0-1)</string>
 
     <string-array name="arrayTahun">
         <item>2013</item>

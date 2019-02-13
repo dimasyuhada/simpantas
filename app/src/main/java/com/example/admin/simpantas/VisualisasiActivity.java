@@ -3,6 +3,8 @@ package com.example.admin.simpantas;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,6 +12,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -54,34 +57,44 @@ public class VisualisasiActivity extends FragmentActivity implements OnMapReadyC
 
         // Add a marker in Sydney and move the camera
         LatLng riau = new LatLng(latitude, longitude);
-////
-//        MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("Hello Maps").snippet("test").icon(BitmapDescriptorFactory.fromResource(R.drawable.fireblue));
-//        MarkerOptions marker1 = new MarkerOptions().position(new LatLng(0.510, 101.511)).title("Hello Maps").snippet("test").icon(BitmapDescriptorFactory.fromResource(R.drawable.firered));
-//
-//        mMap.addMarker(marker);
-//        mMap.addMarker(marker1);
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(riau));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+        Hotspot h = new Hotspot();
+        CustomInfoWindowGMap customInfoWindow = new CustomInfoWindowGMap(this);
+        mMap.setInfoWindowAdapter(customInfoWindow);
 
         for (int i=0; i<retrieveList.size();i++){
             switch (retrieveList.get(i).getTemp())
             {
                 case 0:
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet(retrieveList.get(i).getKecamatan()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireblue)));
+                    h.setConfidence(retrieveList.get(i).getConfidence());
+
+                    Marker l1 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireblue)));
+                    l1.setTag(h);
+                    l1.showInfoWindow();
                     break;
                 case 1:
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet(retrieveList.get(i).getKecamatan()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireyellow)));
+                    h.setConfidence(retrieveList.get(i).getConfidence());
+
+                    Marker l2 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireyellow)));
+                    l2.setTag(h);
+                    l2.showInfoWindow();
                     break;
                 case 2:
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet(retrieveList.get(i).getKecamatan()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireorange)));
+                    h.setConfidence(retrieveList.get(i).getConfidence());
+
+                    Marker l3 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireorange)));
+                    l3.setTag(h);
+                    l3.showInfoWindow();
                     break;
                 case 3:
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet(retrieveList.get(i).getKecamatan()).icon(BitmapDescriptorFactory.fromResource(R.drawable.firered)));
+                    h.setConfidence(retrieveList.get(i).getConfidence());
+
+                    Marker l4 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.firered)));
+                    l4.setTag(h);
+                    l4.showInfoWindow();
                     break;
             }
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(riau));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-
     }
 }
