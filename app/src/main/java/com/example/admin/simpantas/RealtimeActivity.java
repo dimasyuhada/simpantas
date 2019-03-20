@@ -1,6 +1,7 @@
 package com.example.admin.simpantas;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +11,15 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -34,7 +38,13 @@ public class RealtimeActivity extends AppCompatActivity {
     private Button bMap;
     private int inputCount;
     private String recentDate = "";
+    private TextView showDate;
     private List<Hotspot> todayHotspot = new ArrayList<>();
+
+    private List<Hotspot> hpListDay1 = new ArrayList<>();
+    private List<Hotspot> hpListDay2 = new ArrayList<>();
+    private List<Hotspot> hpListDay3 = new ArrayList<>();
+    private List<Hotspot> hpListDay4 = new ArrayList<>();
 
     // URL to get contacts JSON (CONTOH DARI ANDROIDHIVE)
     private static String url = "http://sipongi.menlhk.go.id/action/indohotspot";
@@ -51,19 +61,31 @@ public class RealtimeActivity extends AppCompatActivity {
         coordinateList = new ArrayList<HashMap<String, String>>();
         lv = (ListView) findViewById(R.id.list);
         bMap = (Button) findViewById(R.id.btnMap);
+        showDate = (TextView) findViewById(R.id.strDate);
 
         //CEK TANGGAL UNTUK PEMBAHARUAN DATA TITIK
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-//        recentDate = df.format(c);
-        recentDate = "14-Jun-1994";
+        recentDate = df.format(c);
+        showDate.setText(recentDate);
+
+//        recentDate = "14-Jun-1994";
         boolean newDate = db.initTanggal(recentDate);
         if(newDate) {
             migrateData();
         }else{
             db.removeHotspotUpdate();
         }
-        new GetContacts().execute();
+        new GetHotspot().execute();
+        bMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                processSequence();
+                Intent i = new Intent(RealtimeActivity.this, VisualisasiActivity.class);
+                i.putExtra("resultObject", (Serializable) todayHotspot);
+                startActivity(i);
+            }
+        });
+
     }
 
     private void migrateData() {
@@ -78,7 +100,7 @@ public class RealtimeActivity extends AppCompatActivity {
         db.removeHotspotUpdate();
     }
 
-    private class GetContacts extends AsyncTask<Void, Void, Void>{
+    private class GetHotspot extends AsyncTask<Void, Void, Void>{
 
         @Override
         protected void onPreExecute() {
@@ -277,6 +299,36 @@ public class RealtimeActivity extends AppCompatActivity {
 
         Log.d(TAG,"HASIL SPLIT :"+val1+","+val2+","+val3+","+val4+","+val5+","+val6+","+val7+","+val8+","+val9);
         return valInfo;
+    }
+
+    private void processSequence() {
+        todayHotspot.addAll(db.getAllHotspotUpdate());
+        hpListDay1.addAll(db.getSelectedHotspot(1));
+        hpListDay2.addAll(db.getSelectedHotspot(2));
+        hpListDay3.addAll(db.getSelectedHotspot(3));
+        hpListDay4.addAll(db.getSelectedHotspot(4));
+        for(int i=0; i<todayHotspot.size(); i++) {
+            for(int j=0; j<hpListDay1.size(); j++){
+                if ((Double.compare(todayHotspot.get(i).getLatitude(),hpListDay1.get(j).getLatitude())==0) && (Double.compare(todayHotspot.get(i).getLongitude(),hpListDay1.get(j).getLongitude())==0)){
+                    todayHotspot.get(i).setTemp(1);
+                    for(int k=0; k<hpListDay2.size(); k++){
+                        if ((Double.compare(todayHotspot.get(i).getLatitude(),hpListDay2.get(k).getLatitude())==0) && (Double.compare(todayHotspot.get(i).getLongitude(),hpListDay2.get(k).getLongitude())==0)){
+                            todayHotspot.get(i).setTemp(2);
+                            for(int l=0; l<hpListDay3.size(); l++){
+                                if ((Double.compare(todayHotspot.get(i).getLatitude(),hpListDay3.get(l).getLatitude())==0) && (Double.compare(todayHotspot.get(i).getLongitude(),hpListDay3.get(l).getLongitude())==0)){
+                                    todayHotspot.get(i).setTemp(3);
+                                    for(int m=0; m<hpListDay4.size(); m++){
+                                        if ((Double.compare(todayHotspot.get(i).getLatitude(),hpListDay3.get(m).getLatitude())==0) && (Double.compare(todayHotspot.get(i).getLongitude(),hpListDay3.get(m).getLongitude())==0)){
+                                            todayHotspot.get(i).setTemp(4);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

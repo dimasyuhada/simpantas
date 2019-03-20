@@ -23,9 +23,12 @@ import android.widget.Toast;
 
 import com.opencsv.CSVWriter;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,9 @@ import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.idLists.creators
 import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.idLists.creators.IdListCreator_FatBitmap;
 import ca.pfv.spmf.algorithms.sequentialpatterns.spam.Candidate;
 import ca.pfv.spmf.gui.plot.Plot;
+import de.siegmar.fastcsv.reader.CsvParser;
+import de.siegmar.fastcsv.reader.CsvReader;
+import de.siegmar.fastcsv.reader.CsvRow;
 
 public class PolaSekuensActivity extends AppCompatActivity{
 
@@ -52,6 +58,7 @@ public class PolaSekuensActivity extends AppCompatActivity{
     LinearLayout minsupView;
     Button bSpade,bMinSup;
     String tahunValue = "";
+    String bulanValue = "";
 
     ArrayList<HashMap<String, String>> userList;
 
@@ -72,6 +79,8 @@ public class PolaSekuensActivity extends AppCompatActivity{
 
         Bundle bundle = getIntent().getExtras();
         tahunValue = bundle.getString("tahunValue");
+        bulanValue = bundle.getString("bulanValue");
+        Log.d("BULAN BERAPA",bulanValue);
         Log.d("TAHUN BERAPA",tahunValue);
 
         new GetFilter().execute();
@@ -88,6 +97,12 @@ public class PolaSekuensActivity extends AppCompatActivity{
                     String strMinsup = inputMinsup.getText().toString();
                     float dMinsup = Float.parseFloat(strMinsup);
                     doSpade(dMinsup,tahunValue);
+
+                    Intent spade = new Intent( PolaSekuensActivity.this, SpadeResultActivity.class);
+                    spade.putExtra("blnVal",bulanValue);
+                    spade.putExtra("thnVal",tahunValue);
+                    startActivity(spade);
+
                 } catch (IOException e) {
                     Log.d("Error SPADE : ",e.getMessage());
                     e.printStackTrace();
@@ -98,6 +113,8 @@ public class PolaSekuensActivity extends AppCompatActivity{
             }
         });
     }
+
+
 
     private class GetFilter extends AsyncTask<Void, Void, Void> {
         @Override
@@ -112,7 +129,7 @@ public class PolaSekuensActivity extends AppCompatActivity{
 
         @Override
         protected Void doInBackground(Void... voids) {
-            userList = db.getTitikForFilter(tahunValue);
+            userList = db.getTitikForFilter(bulanValue,tahunValue);
             return null;
         }
 
@@ -141,7 +158,7 @@ public class PolaSekuensActivity extends AppCompatActivity{
         String initLtd = "";
         String initUnixDate = "";
         String initResult = "";
-        int tempSid=0,i = 0;
+        int tempSid=1,i = 0;
         for(i=0; i< userList.size();i++){
             HashMap<String,String> tempArray = userList.get(i);
             if(i==0){
@@ -174,7 +191,7 @@ public class PolaSekuensActivity extends AppCompatActivity{
                     }
                     if(isInsert){
                         initResult += " -1 -2";
-                        result = db.insertTransform(initResult,tahunValue);
+                        result = db.insertTransform(tempSid++,initResult,bulanValue,tahunValue);
                     }
                     initResult = tempArray.get("unixdatetime");
                     initLat = tempArray.get("latitude");
@@ -184,7 +201,7 @@ public class PolaSekuensActivity extends AppCompatActivity{
             }
         }
         initResult += " -1 -2";
-        result = db.insertTransform(initResult,tahunValue);
+        result = db.insertTransform(tempSid++,initResult,bulanValue,tahunValue);
         //EXPORT TRANSFORM DATA
         boolean initExport = db.exportTransform();
         if (result && initExport){
@@ -221,10 +238,6 @@ public class PolaSekuensActivity extends AppCompatActivity{
         System.out.print(algorithm.getNumberOfFrequentPatterns()+ " frequent patterns.");
 
         System.out.print(algorithm.printStatistics());
-    }
-
-    private void doInsertDataSpade(String tahun, double mSupport){
-
     }
 
 }

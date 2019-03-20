@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(TitikFilter.CREATE_TABLE);
         db.execSQL(Transform.CREATE_TABLE);
         db.execSQL(Tanggal.CREATE_TABLE);
+        db.execSQL(Tspade.CREATE_TABLE);
     }
 
     @Override
@@ -47,6 +49,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TitikFilter.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Transform.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Tanggal.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Tspade.TABLE_NAME);
         onCreate(db);
     }
     // CHECK AND UPDATE TANGGAL
@@ -79,11 +82,12 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     //RETRACTED TABLE
-    public void removeAll()
+    public void removeTitik()
     {
         SQLiteDatabase db = this.getWritableDatabase(); // helper is object extends SQLiteOpenHelper
-        db.delete(Hotspot.TABLE_NAME, null, null);
-        db.delete(Hotspot.TABLE_NAME_UPDATE, null, null);
+        db.delete(Titik.TABLE_NAME, null, null);
+        db.delete(TitikFilter.TABLE_NAME, null, null);
+        db.delete(Transform.TABLE_NAME, null, null);
     }
     public void removeHotspotUpdate()
     {
@@ -96,8 +100,14 @@ public class DBHelper extends SQLiteOpenHelper{
         db.delete(Transform.TABLE_NAME, null, null);
     }
 
+    public void removeTspade()
+    {
+        SQLiteDatabase db = this.getWritableDatabase(); // helper is object extends SQLiteOpenHelper
+        db.delete(Tspade.TABLE_NAME, null, null);
+    }
+
     //TITIK
-    public boolean insertTitik(double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String provinsi, String kabupaten, String kecamatan, String desa, String tahun) {
+    public boolean insertTitik(double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String provinsi, String kabupaten, String kecamatan, String desa, String bulan, String tahun) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -111,6 +121,7 @@ public class DBHelper extends SQLiteOpenHelper{
         values.put(Titik.COLUMN_KABUPATEN, kabupaten);
         values.put(Titik.COLUMN_KECAMATAN, kecamatan);
         values.put(Titik.COLUMN_DESA, desa);
+        values.put(Titik.COLUMN_BULAN, bulan);
         values.put(Titik.COLUMN_TAHUN, tahun);
 
         // insert row
@@ -157,12 +168,12 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     //TITIKFILTER
-    public  ArrayList<HashMap<String, String>> getTitikForFilter(String tahunValue){
+    public  ArrayList<HashMap<String, String>> getTitikForFilter(String bulanValue, String tahunValue){
         ArrayList<HashMap<String, String>> titikFilter = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT A."+Titik.COLUMN_LATITUDE+",A."+Titik.COLUMN_LONGITUDE+",A."+Titik.COLUMN_UNIXDATE+",A."+Titik.COLUMN_UNIXDATETIME+",A."+Titik.COLUMN_TANGGAL+","+Titik.COLUMN_ID+",A."+Titik.COLUMN_TAHUN+" FROM "+Titik.TABLE_NAME+
-                " A JOIN (SELECT count(*) as count, latitude,longitude,unixdate,unixdatetime,tahun from "+Titik.TABLE_NAME+" WHERE tahun = "+tahunValue+" GROUP BY latitude,longitude having count >=2) B on A."+Titik.COLUMN_LATITUDE+"=B."+Titik.COLUMN_LATITUDE+" AND A."+Titik.COLUMN_LONGITUDE+"=B."+Titik.COLUMN_LONGITUDE+" AND A."+Titik.COLUMN_TAHUN+"=B."+Titik.COLUMN_TAHUN+
+        String selectQuery = "SELECT A."+Titik.COLUMN_LATITUDE+",A."+Titik.COLUMN_LONGITUDE+",A."+Titik.COLUMN_UNIXDATE+",A."+Titik.COLUMN_UNIXDATETIME+",A."+Titik.COLUMN_TANGGAL+","+Titik.COLUMN_ID+",A."+Titik.COLUMN_BULAN+",A."+Titik.COLUMN_TAHUN+" FROM "+Titik.TABLE_NAME+
+                " A JOIN (SELECT count(*) as count,latitude,longitude,unixdate,unixdatetime,bulan,tahun from "+Titik.TABLE_NAME+" WHERE bulan ='"+bulanValue+"' AND tahun ="+tahunValue+" GROUP BY latitude,longitude having count >=2) B on A."+Titik.COLUMN_LATITUDE+"=B."+Titik.COLUMN_LATITUDE+" AND A."+Titik.COLUMN_LONGITUDE+"=B."+Titik.COLUMN_LONGITUDE+" AND A."+Titik.COLUMN_BULAN+"=B."+Titik.COLUMN_BULAN+" AND A."+Titik.COLUMN_TAHUN+"=B."+Titik.COLUMN_TAHUN+
                 " ORDER BY A."+Titik.COLUMN_LATITUDE+",A."+Titik.COLUMN_LONGITUDE+",A."+Titik.COLUMN_UNIXDATE+",A."+Titik.COLUMN_UNIXDATETIME ;
         Cursor cursor = db.rawQuery(selectQuery,null);
         if (cursor.moveToFirst()) {
@@ -316,7 +327,6 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     public List<Hotspot> getAllHotspotUpdate() {
-        Log.d("Test Flow: ", "MASUK SINI GA 1");
         List<Hotspot> hotspots = new ArrayList<>();
 
         // Select All Query
@@ -402,12 +412,14 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     //TRANSFORM
-    public boolean insertTransform(String item, String tahun) {
+    public boolean insertTransform(int sid, String item, String bulan, String tahun) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(Transform.COLUMN_SID, sid);
         values.put(Transform.COLUMN_ITEM, item);
+        values.put(Transform.COLUMN_BULAN, bulan);
         values.put(Transform.COLUMN_TAHUN, tahun);
 
         // insert row
@@ -436,9 +448,11 @@ public class DBHelper extends SQLiteOpenHelper{
             String selectQuery = "SELECT * FROM " + Transform.TABLE_NAME;
             Cursor c = db.rawQuery(selectQuery,null);
             while(c.moveToNext()){
-
-                String arrStr[] = {c.getString(1)};
-                csvWriter.writeNext(arrStr);
+                String rowData = c.getString(1);
+                rowData = rowData.replaceAll("\"","");
+                String arrStr[] = {rowData};
+                csvWriter.writeNext(arrStr,false);
+                Log.d("VALUE INPUTNYA ", Arrays.toString(arrStr));
             }
             csvWriter.close();
             c.close();
@@ -450,5 +464,52 @@ public class DBHelper extends SQLiteOpenHelper{
         }
         return statsInput;
     }
+
+
+
+    //TSPADE
+    public void insertTspade(HashMap<String, String> ts) {
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Tspade.COLUMN_UNIXDATETIME, ts.get("unixdatetime"));
+        values.put(Tspade.COLUMN_BULAN, ts.get("month"));
+        values.put(Tspade.COLUMN_TAHUN, ts.get("year"));
+
+        // insert row
+        db.insert(Tspade.TABLE_NAME, null, values);
+
+        // close db connection
+        db.close();
+    }
+
+    public List<Tspade> getTspadeByDate(String m, String y) {
+        List<Tspade> spades = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Tspade.TABLE_NAME + " WHERE " +
+                Tspade.COLUMN_BULAN + "=" + m + " AND " + Tspade.COLUMN_TAHUN + "=" + y;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Tspade t = new Tspade();
+                t.setUnixdatetime(cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_UNIXDATETIME)));
+                t.setBulan(cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_BULAN)));
+                t.setTahun(cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_TAHUN)));
+                spades.add(t);
+            } while (cursor.moveToNext());
+        }
+        // close db connection
+        db.close();
+        // return notes list
+        return spades;
+    }
+
+
 
 }

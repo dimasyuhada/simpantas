@@ -3,7 +3,7 @@ package com.example.admin.simpantas;
 public class TitikFilter {
     private double latitude, longitude;
     private int id,unixDateTime, unixDate;
-    private String tanggal,tahun;
+    private String tanggal,tahun,bulan;
 
     public static final String TABLE_NAME = "Titikfilter";
     public static final String COLUMN_SID = "sid";
@@ -13,6 +13,7 @@ public class TitikFilter {
     public static final String COLUMN_UNIXDATE = "unixdate";
     public static final String COLUMN_UNIXDATETIME = "unixdatetime";
     public static final String COLUMN_TANGGAL = "tanggal";
+    public static final String COLUMN_BULAN = "bulan";
     public static final String COLUMN_TAHUN = "tahun";
 
     public static final String CREATE_TABLE =
@@ -24,6 +25,7 @@ public class TitikFilter {
                     + COLUMN_UNIXDATE + " INTEGER,"
                     + COLUMN_UNIXDATETIME + " INTEGER,"
                     + COLUMN_TANGGAL + " TEXT,"
+                    + COLUMN_BULAN + " TEXT,"
                     + COLUMN_TAHUN + " TEXT"
                     + ")";
 
@@ -32,13 +34,14 @@ public class TitikFilter {
 
     }
 
-    public TitikFilter(int id, double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String tahun) {
+    public TitikFilter(int id, double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String bulan, String tahun) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.unixDate = unixDate;
         this.unixDateTime = unixDateTime;
         this.tanggal = tanggal;
+        this.bulan = bulan;
         this.tahun = tahun;
     }
 
@@ -88,6 +91,14 @@ public class TitikFilter {
 
     public void setTanggal(String tanggal) {
         this.tanggal = tanggal;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
     }
 
     public String getTahun() {

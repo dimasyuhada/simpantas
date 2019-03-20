@@ -13,11 +13,15 @@
     <string name="proses">Proses</string>
     <string name="title_activity_visualisasi">Map</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="lihatSekuens">LIHAT SEKUENS</string>
 
     <!-- Strings related to login -->
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="btn_upload">Upload</string>
+    <string name="btn_cari">Cari</string>
     <string name="btn_process">Process</string>
+    <string name="btn_filter">Filter Data</string>
     <string name="lblTahun">Pilih Tahun :</string>
     <string name="lblBulan">Pilih Bulan :</string>
     <string name="strTransform">Transform</string>
@@ -25,32 +29,36 @@
     <string name="appTitle">SIMPANTAS</string>
     <string name="strTitle">SIMPANTAS</string>
     <string name="input_data">Input Data</string>
+    <string name="newInputData">Input Data Baru</string>
     <string name="realtime_hotspot">REALTIME HOTSPOT</string>
+    <string name="titleHistorical">HISTORIKAL DATA</string>
     <string name="btn_transform">Transform</string>
     <string name="btnSpade">SPADE</string>
-    <string name="minsupHint">Input MinSup (0-1)</string>
+    <string name="minsupHint">Input MinSup (0–1)</string>
 
     <string-array name="arrayTahun">
+        <item>2012</item>
         <item>2013</item>
         <item>2014</item>
         <item>2015</item>
         <item>2016</item>
         <item>2017</item>
         <item>2018</item>
+        <item>2019</item>
     </string-array>
 
     <string-array name="arrayBulan">
-        <item>Jan</item>
-        <item>Feb</item>
-        <item>Mar</item>
-        <item>Apr</item>
-        <item>May</item>
-        <item>Jun</item>
-        <item>Jul</item>
-        <item>Aug</item>
-        <item>Sep</item>
-        <item>Okt</item>
-        <item>Noc</item>
-        <item>Des</item>
+        <item>JANUARI</item>
+        <item>FEBRUARI</item>
+        <item>MARET</item>
+        <item>APRIL</item>
+        <item>MEI</item>
+        <item>JUNI</item>
+        <item>JULI</item>
+        <item>AGUSTUS</item>
+        <item>SEPTEMBER</item>
+        <item>OKTOBER</item>
+        <item>NOVEMBER</item>
+        <item>DESEMBER</item>
     </string-array>
 </resources>

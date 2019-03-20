@@ -3,6 +3,7 @@ package com.example.admin.simpantas;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -37,57 +38,91 @@ import de.siegmar.fastcsv.reader.CsvRow;
 public class InputTitikActivity extends AppCompatActivity{
 
     private List<Titik> titiks = new ArrayList<>();
-    private static final String FORMAT_TIME = "hh:mm:ss a";
 
-    String time ="";
+    String time ="",strTahun = "",strBulan = "";
     ProgressDialog pDialog;
-    TextView lblInputCount;
-    Button btnProcess, btnPattern;
-    Spinner spinnerTahun;
+    TextView lblTitle;
+    Button btnProcess, btnPattern, btnCari;
+    Spinner spinnerTahun, spinnerBulan;
+    File file;
 
     private DBHelper db;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_titik);
+
+        lblTitle = (TextView) findViewById(R.id.titlePage);
+        spinnerBulan = (Spinner) findViewById(R.id.spinnerBulan);
         spinnerTahun = (Spinner) findViewById(R.id.spinnerTahun);
+        btnCari = (Button) findViewById(R.id.btnCari);
         btnProcess = (Button) findViewById(R.id.btnProses);
         btnPattern = (Button) findViewById(R.id.btnPattern);
-        lblInputCount = (TextView) findViewById(R.id.lblInputParameter);
 
         db = new DBHelper(this);
+        Intent intent = getIntent();
+        int valTemp = intent.getExtras().getInt("temp menu");
+        Log.d("temp value",String.valueOf(valTemp));
 
         ArrayAdapter<CharSequence> aa = ArrayAdapter.createFromResource(this, R.array.arrayTahun, R.layout.support_simple_spinner_dropdown_item);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTahun.setAdapter(aa);
 
-        btnProcess.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                File file = new File(Environment.getExternalStorageDirectory()+"/dbSimpantas/",aa.getItem(spinnerTahun.getSelectedItemPosition())+".csv");
-                if (file.exists()){
-                    processReadCSV(file);
-                }else{
-                    Toast.makeText(InputTitikActivity.this, "file didn't exist. Make sure file in the folder.", Toast.LENGTH_SHORT).show();
+        ArrayAdapter<CharSequence> ab = ArrayAdapter.createFromResource(this, R.array.arrayBulan, R.layout.support_simple_spinner_dropdown_item);
+        ab.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerBulan.setAdapter(ab);
+
+        if(valTemp==1){
+            lblTitle.setText("INPUT BARU");
+            btnCari.setVisibility(View.GONE);
+//            btnPattern.setVisibility(View.GONE);
+        }else{
+            lblTitle.setText("LIHAT SEKUENS");
+            btnProcess.setVisibility(View.GONE);
+            btnPattern.setVisibility(View.GONE);
+        }
+
+        btnProcess.setOnClickListener(v -> {
+            file = new File(Environment.getExternalStorageDirectory()+"/dbSimpantas/",ab.getItem(spinnerBulan.getSelectedItemPosition())+""+aa.getItem(spinnerTahun.getSelectedItemPosition())+".csv");
+            Log.d("FILE NAME",String.valueOf(file));
+            if (file.exists()){
+                pDialog = new ProgressDialog(InputTitikActivity.this);
+                pDialog.setMessage("Please wait..\n It takes a while");
+                pDialog.setCancelable(false);
+                pDialog.show();
+
+                strTahun = spinnerTahun.getSelectedItem().toString();
+                strBulan = spinnerBulan.getSelectedItem().toString();
+
+                processReadCSV(file);
+
+//                btnPattern.setVisibility(View.VISIBLE);
+                if (!this.isFinishing() && pDialog != null) {
+                    pDialog.dismiss();
                 }
+            }else{
+                Toast.makeText(InputTitikActivity.this, "file didn't exist. Make sure file in the folder.", Toast.LENGTH_SHORT).show();
             }
         });
         btnPattern.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent titik = new Intent( InputTitikActivity.this, PolaSekuensActivity.class);
                 titik.putExtra("tahunValue",aa.getItem(spinnerTahun.getSelectedItemPosition()));
+                titik.putExtra("bulanValue",ab.getItem(spinnerBulan.getSelectedItemPosition()));
                 startActivity(titik);
+            }
+        });
+
+        btnCari.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
             }
         });
     }
 
     private void processReadCSV(File file) {
-
-        pDialog = new ProgressDialog(InputTitikActivity.this);
-        pDialog.setMessage("Please wait..\n It takes a while");
-        pDialog.setCancelable(false);
-        pDialog.show();
-
         @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("HH:mm:ss a");
         String strTime = "";
         CsvReader csvReader = new CsvReader();
@@ -126,8 +161,8 @@ public class InputTitikActivity extends AppCompatActivity{
                     int cTahun = Integer.parseInt(tokens[3].substring(0,4));
                     int cBulan = Integer.parseInt(tokens[3].substring(4,6));
                     int cTanggal = Integer.parseInt(tokens[3].substring(6,8));
-//                cTahun = cTahun-1900;
-//                cBulan = cBulan-1;
+                    cTahun = cTahun-1900;
+                    cBulan = cBulan-1;
 
                     Log.d("InputActivity","GOT PARSE VALUE: "+cTanggal+" "+cBulan+" "+cTahun+" ");
 
@@ -173,14 +208,10 @@ public class InputTitikActivity extends AppCompatActivity{
                     }
                     titiks.add(readTitik);
 
-                    boolean result = db.insertTitik(Double.parseDouble(tokens[0]),Double.parseDouble(tokens[1]),uDate,uDateTime,tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],String.valueOf(cTahun));
+                    boolean result = db.insertTitik(Double.parseDouble(tokens[0]),Double.parseDouble(tokens[1]),uDate,uDateTime,tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],strBulan,strTahun);
                     if(result){
                         String msg = spinnerTahun.getSelectedItem().toString();
                         Toast.makeText(InputTitikActivity.this, "Success!!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(InputTitikActivity.this, ProcessTitikActivity.class);
-                        intent.putExtra("csv", msg);
-                        startActivity(intent);
-
                     }else{
                         Toast.makeText(InputTitikActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
                     }
@@ -196,11 +227,9 @@ public class InputTitikActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
         }
-        String count = String.valueOf(titiks.size());
-        lblInputCount.setText("Jumlah data yang masuk : "+count);
-        if (!this.isFinishing() && pDialog != null) {
-            pDialog.dismiss();
-        }
+
     }
+
+
 
 }

@@ -1,11 +1,13 @@
 package com.example.admin.simpantas;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +18,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     final String PREFNAME = "MyPrefsFile";
     public static final String value = "key";
-    SharedPreferences sharedPreferences;
+    SharedPreferences permissionStatus;
+
+    private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
 
     Button inputButton, visualButton;
 
@@ -27,21 +32,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         inputButton = (Button) findViewById(R.id.button);
         visualButton = (Button) findViewById(R.id.button3);
-
         inputButton.setOnClickListener(this);
         visualButton.setOnClickListener(this);
 
-        //BUAT CEK APAKAH INSTALL PERTAMA
-        //makeFolder();
-    }
+        permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
-    private void makeFolder() {
-        //KALO INSTALL PERTAMA, BUAT DITEKTORI UNTUK NYIMPEN FILE YANG AKAN DIPERGUNAKAN
-        String folder_simpantas = "dbSimpantas";
-        File directory = new File(Environment.getExternalStorageDirectory(),folder_simpantas);
-        if(!directory.exists()){
-            directory.mkdir();
-        }
     }
 
     @Override
@@ -49,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())
         {
             case R.id.button:
-                Intent titik = new Intent( MainActivity.this, InputTitikActivity.class);
+                Intent titik = new Intent( MainActivity.this, ProcessTitikActivity.class);
                 startActivity(titik);
             break;
             case R.id.button3:

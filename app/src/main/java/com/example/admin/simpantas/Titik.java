@@ -3,7 +3,7 @@ package com.example.admin.simpantas;
 public class Titik {
     private double latitude, longitude;
     private int unixDateTime, unixDate;
-    private String tanggal,provinsi, kabupaten, kecamatan, desa, tahun;
+    private String tanggal,provinsi, kabupaten, kecamatan, desa, bulan, tahun;
 
     public static final String TABLE_NAME = "Titik";
     public static final String COLUMN_ID = "id";
@@ -16,6 +16,7 @@ public class Titik {
     public static final String COLUMN_KABUPATEN = "kabupaten";
     public static final String COLUMN_KECAMATAN = "kecamatan";
     public static final String COLUMN_DESA = "desa";
+    public static final String COLUMN_BULAN = "bulan";
     public static final String COLUMN_TAHUN = "tahun";
 
     public static final String CREATE_TABLE =
@@ -30,6 +31,7 @@ public class Titik {
                     + COLUMN_KABUPATEN + " TEXT,"
                     + COLUMN_KECAMATAN + " TEXT,"
                     + COLUMN_DESA + " TEXT,"
+                    + COLUMN_BULAN + " TEXT,"
                     + COLUMN_TAHUN + " TEXT"
                     + ")";
 
@@ -38,7 +40,7 @@ public class Titik {
 
     }
 
-    public Titik(double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String provinsi, String kabupaten, String kecamatan, String desa, String tahun) {
+    public Titik(double latitude, double longitude, int unixDate, int unixDateTime, String tanggal, String provinsi, String kabupaten, String kecamatan, String desa, String bulan, String tahun) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.unixDate = unixDate;
@@ -48,6 +50,7 @@ public class Titik {
         this.kabupaten = kabupaten;
         this.kecamatan = kecamatan;
         this.desa = desa;
+        this.bulan = bulan;
         this.tahun = tahun;
     }
 
@@ -121,6 +124,14 @@ public class Titik {
 
     public void setDesa(String desa) {
         this.desa = desa;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
     }
 
     public String getTahun() {

@@ -14,19 +14,19 @@
         android:layout_marginBottom="2sp"
         android:textStyle="italic"
         android:textColor="@color/colorAccent"
-        android:id="@+id/strDate"
+        android:id="@+id/strDateResult"
         tools:ignore="SmallSp">
     </TextView>
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/spadeList"
         android:layout_width="fill_parent"
         android:layout_height="500dp"
         android:layout_marginBottom="10dp" />
 
     <Button android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnMap"
+        android:id="@+id/btnResultMap"
         android:text="@string/visualisasi_titik"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"

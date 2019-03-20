@@ -3,41 +3,91 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/titlePage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_marginBottom="40dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblBulan"
+        android:layout_marginBottom="5dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerBulan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp"
+        android:entries="@array/arrayBulan"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblTahun"
+        android:layout_marginBottom="5dp"/>
 
     <Spinner
         android:id="@+id/spinnerTahun"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        />
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp"
+        android:entries="@array/arrayTahun" />
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:hint="Phone"
-        android:inputType="phone" />
+    <!--<TextView-->
+        <!--android:id="@+id/lblInputParameter"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/lblTahun"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="@color/colorAccent"-->
+        <!--android:layout_marginBottom="5dp"/>-->
 
     <Button
-        android:id="@+id/buttonProcess"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnCari"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@color/colorPrimaryDark"
         android:elevation="4dp"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
-        android:text="@string/btn_process"
+        android:layout_marginBottom="10dp"
+        android:text="@string/btn_cari"
         android:textColor="#fff" />
+
+    <Button
+        android:id="@id/btnProses"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="4dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/btn_upload"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@id/btnPattern"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="4dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
+        android:text="@string/btn_filter"
+        android:layout_marginBottom="10dp"
+        android:textColor="#fff" />
+
 </LinearLayout>

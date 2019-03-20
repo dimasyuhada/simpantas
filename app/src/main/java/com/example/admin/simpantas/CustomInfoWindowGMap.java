@@ -26,8 +26,8 @@ public class CustomInfoWindowGMap implements GoogleMap.InfoWindowAdapter {
         View view = ((Activity)context).getLayoutInflater().inflate(R.layout.list_infowindow,null);
 
         TextView tvProvinsi = view.findViewById(R.id.txProvinsi);
-        TextView tvLatitude = view.findViewById(R.id.txLatitude);
-        TextView tvLongitude = view.findViewById(R.id.txLongitude);
+//        TextView tvLatitude = view.findViewById(R.id.txLatitude);
+//        TextView tvLongitude = view.findViewById(R.id.txLongitude);
         TextView tvConfidence = view.findViewById(R.id.txConfidence);
         TextView tvKecamatanKabupaten = view.findViewById(R.id.txKecamatanKabupaten);
 
@@ -35,8 +35,6 @@ public class CustomInfoWindowGMap implements GoogleMap.InfoWindowAdapter {
         tvKecamatanKabupaten.setText(marker.getSnippet());
 
         Hotspot hs = (Hotspot) marker.getTag();
-        tvLatitude.setText("Latitude : "+String.valueOf(hs.getLatitude()));
-        tvLongitude.setText("Longitude : "+String.valueOf(hs.getLongitude()));
         tvConfidence.setText("Confidence : "+String.valueOf(hs.getConfidence()));
 
         return view;

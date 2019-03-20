@@ -30,9 +30,8 @@ public class VisualisasiActivity extends FragmentActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualisasi);
-        latitude = 0.506;
-        longitude = 101.437;
-
+        latitude = 3.1;
+        longitude = 115.8;
         retrieveList = (List<Hotspot>) getIntent().getSerializableExtra("resultObject");
 
 
@@ -56,7 +55,7 @@ public class VisualisasiActivity extends FragmentActivity implements OnMapReadyC
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng riau = new LatLng(latitude, longitude);
+        LatLng indonesia = new LatLng(latitude, longitude);
         Hotspot h = new Hotspot();
         CustomInfoWindowGMap customInfoWindow = new CustomInfoWindowGMap(this);
         mMap.setInfoWindowAdapter(customInfoWindow);
@@ -67,34 +66,34 @@ public class VisualisasiActivity extends FragmentActivity implements OnMapReadyC
                 case 0:
                     h.setConfidence(retrieveList.get(i).getConfidence());
 
-                    Marker l1 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireblue)));
+                    Marker l1 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getProvinsi()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireblue)));
                     l1.setTag(h);
                     l1.showInfoWindow();
                     break;
                 case 1:
                     h.setConfidence(retrieveList.get(i).getConfidence());
 
-                    Marker l2 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireyellow)));
+                    Marker l2 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getProvinsi()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireyellow)));
                     l2.setTag(h);
                     l2.showInfoWindow();
                     break;
                 case 2:
                     h.setConfidence(retrieveList.get(i).getConfidence());
 
-                    Marker l3 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireorange)));
+                    Marker l3 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getProvinsi()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.fireorange)));
                     l3.setTag(h);
                     l3.showInfoWindow();
                     break;
                 case 3:
                     h.setConfidence(retrieveList.get(i).getConfidence());
 
-                    Marker l4 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getKawasan()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.firered)));
+                    Marker l4 = mMap.addMarker(new MarkerOptions().position(new LatLng(retrieveList.get(i).getLatitude(), retrieveList.get(i).getLongitude())).title(retrieveList.get(i).getProvinsi()).snippet("Daerah : "+retrieveList.get(i).getKecamatan()+", "+retrieveList.get(i).getKabupaten()).icon(BitmapDescriptorFactory.fromResource(R.drawable.firered)));
                     l4.setTag(h);
                     l4.showInfoWindow();
                     break;
             }
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(riau));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(4), 2000, null);
     }
 }
