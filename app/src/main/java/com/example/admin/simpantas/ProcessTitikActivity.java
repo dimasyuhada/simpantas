@@ -37,8 +37,8 @@ public class ProcessTitikActivity extends AppCompatActivity implements Serializa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_process_titik);
-//        db = new DBHelper(this);
-//        db.removeTitik();
+        db = new DBHelper(this);
+        db.removeTitik();
 
         btnInputData = (Button) findViewById(R.id.btnInputData);
         btnGetData = (Button) findViewById(R.id.btnGetData);

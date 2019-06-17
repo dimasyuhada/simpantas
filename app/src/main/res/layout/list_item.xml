@@ -10,24 +10,23 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
-        android:paddingTop="6dip"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         android:textStyle="bold" />
-
     <TextView
         android:id="@+id/longitude"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
-        android:textColor="@color/colorAccent" />
-
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/informasiTanggal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/colorAccent" />
     <TextView
         android:id="@+id/confidence"
         android:layout_width="fill_parent"

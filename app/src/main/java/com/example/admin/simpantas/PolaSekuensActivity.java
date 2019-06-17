@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,8 +60,10 @@ public class PolaSekuensActivity extends AppCompatActivity{
     Button bSpade,bMinSup;
     String tahunValue = "";
     String bulanValue = "";
+    int state = 0;
 
     ArrayList<HashMap<String, String>> userList;
+    ArrayList<HashMap<String, String>> userListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class PolaSekuensActivity extends AppCompatActivity{
         Bundle bundle = getIntent().getExtras();
         tahunValue = bundle.getString("tahunValue");
         bulanValue = bundle.getString("bulanValue");
+        state = bundle.getInt("state");
         Log.d("BULAN BERAPA",bulanValue);
         Log.d("TAHUN BERAPA",tahunValue);
 
@@ -99,8 +103,9 @@ public class PolaSekuensActivity extends AppCompatActivity{
                     doSpade(dMinsup,tahunValue);
 
                     Intent spade = new Intent( PolaSekuensActivity.this, SpadeResultActivity.class);
-                    spade.putExtra("blnVal",bulanValue);
-                    spade.putExtra("thnVal",tahunValue);
+                    spade.putExtra("tahunValue",tahunValue);
+                    spade.putExtra("bulanValue",bulanValue);
+                    spade.putExtra("state",state);
                     startActivity(spade);
 
                 } catch (IOException e) {
@@ -130,6 +135,15 @@ public class PolaSekuensActivity extends AppCompatActivity{
         @Override
         protected Void doInBackground(Void... voids) {
             userList = db.getTitikForFilter(bulanValue,tahunValue);
+            userListView = db.getTitikForFilter(bulanValue,tahunValue);
+            db.insertTitikFilter(userList);
+            for (int x=0;x<userListView.size();x++){
+                userListView.get(x).put("latitude","Latitude : "+userListView.get(x).get("latitude"));
+                userListView.get(x).put("longitude","Longitude : "+userListView.get(x).get("longitude"));
+                userListView.get(x).put("tanggal","Tanggal (yyyymmdd): "+userListView.get(x).get("tanggal"));
+                userListView.get(x).put("unixdatetime","Unixdatetime : "+userListView.get(x).get("unixdatetime"));
+            }
+
             return null;
         }
 
@@ -143,10 +157,9 @@ public class PolaSekuensActivity extends AppCompatActivity{
              * Updating parsed JSON data into ListView
              * */
             ListAdapter adapter = new SimpleAdapter(
-                    PolaSekuensActivity.this, userList,
-                    R.layout.list_titikpanasfilter, new String[]{"latitude", "longitude", "unixdate", "unixdatetime", "tanggal"}, new int[]{R.id.latitude,
-                    R.id.longitude, R.id.unixdate, R.id.unixdatetime, R.id.tanggal});
-
+                    PolaSekuensActivity.this, userListView,
+                    R.layout.list_titikpanasfilter, new String[]{"latitude", "longitude", "tanggal", "unixdatetime"}, new int[]{R.id.latitude,
+                    R.id.longitude,R.id.tanggal, R.id.unixdatetime});
             lv.setAdapter(adapter);
         }
     }

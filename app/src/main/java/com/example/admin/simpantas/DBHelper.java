@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class DBHelper extends SQLiteOpenHelper{
 
@@ -39,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(Transform.CREATE_TABLE);
         db.execSQL(Tanggal.CREATE_TABLE);
         db.execSQL(Tspade.CREATE_TABLE);
+        db.execSQL(TvFrequent.CREATE_TABLE);
     }
 
     @Override
@@ -50,6 +52,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + Transform.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Tanggal.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Tspade.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TvFrequent.TABLE_NAME);
         onCreate(db);
     }
     // CHECK AND UPDATE TANGGAL
@@ -88,6 +91,8 @@ public class DBHelper extends SQLiteOpenHelper{
         db.delete(Titik.TABLE_NAME, null, null);
         db.delete(TitikFilter.TABLE_NAME, null, null);
         db.delete(Transform.TABLE_NAME, null, null);
+        db.delete(Tspade.TABLE_NAME, null, null);
+        db.delete(TvFrequent.TABLE_NAME, null, null);
     }
     public void removeHotspotUpdate()
     {
@@ -104,6 +109,11 @@ public class DBHelper extends SQLiteOpenHelper{
     {
         SQLiteDatabase db = this.getWritableDatabase(); // helper is object extends SQLiteOpenHelper
         db.delete(Tspade.TABLE_NAME, null, null);
+    }
+    public void removeFrequent()
+    {
+        SQLiteDatabase db = this.getWritableDatabase(); // helper is object extends SQLiteOpenHelper
+        db.delete(TvFrequent.TABLE_NAME, null, null);
     }
 
     //TITIK
@@ -172,7 +182,7 @@ public class DBHelper extends SQLiteOpenHelper{
         ArrayList<HashMap<String, String>> titikFilter = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String selectQuery = "SELECT A."+Titik.COLUMN_LATITUDE+",A."+Titik.COLUMN_LONGITUDE+",A."+Titik.COLUMN_UNIXDATE+",A."+Titik.COLUMN_UNIXDATETIME+",A."+Titik.COLUMN_TANGGAL+","+Titik.COLUMN_ID+",A."+Titik.COLUMN_BULAN+",A."+Titik.COLUMN_TAHUN+" FROM "+Titik.TABLE_NAME+
+        String selectQuery = "SELECT A."+Titik.COLUMN_LATITUDE+",A."+Titik.COLUMN_LONGITUDE+",A."+Titik.COLUMN_UNIXDATE+",A."+Titik.COLUMN_UNIXDATETIME+",A."+Titik.COLUMN_TANGGAL+",A."+Titik.COLUMN_KABUPATEN+",A."+Titik.COLUMN_KECAMATAN+",A."+Titik.COLUMN_ID+",A."+Titik.COLUMN_BULAN+",A."+Titik.COLUMN_TAHUN+" FROM "+Titik.TABLE_NAME+
                 " A JOIN (SELECT count(*) as count,latitude,longitude,unixdate,unixdatetime,bulan,tahun from "+Titik.TABLE_NAME+" WHERE bulan ='"+bulanValue+"' AND tahun ="+tahunValue+" GROUP BY latitude,longitude having count >=2) B on A."+Titik.COLUMN_LATITUDE+"=B."+Titik.COLUMN_LATITUDE+" AND A."+Titik.COLUMN_LONGITUDE+"=B."+Titik.COLUMN_LONGITUDE+" AND A."+Titik.COLUMN_BULAN+"=B."+Titik.COLUMN_BULAN+" AND A."+Titik.COLUMN_TAHUN+"=B."+Titik.COLUMN_TAHUN+
                 " ORDER BY A."+Titik.COLUMN_LATITUDE+",A."+Titik.COLUMN_LONGITUDE+",A."+Titik.COLUMN_UNIXDATE+",A."+Titik.COLUMN_UNIXDATETIME ;
         Cursor cursor = db.rawQuery(selectQuery,null);
@@ -184,6 +194,8 @@ public class DBHelper extends SQLiteOpenHelper{
                 tf.put("unixdate",cursor.getString(cursor.getColumnIndex(Titik.COLUMN_UNIXDATE)));
                 tf.put("unixdatetime",cursor.getString(cursor.getColumnIndex(Titik.COLUMN_UNIXDATETIME)));
                 tf.put("tanggal",cursor.getString(cursor.getColumnIndex(Titik.COLUMN_TANGGAL)));
+                tf.put("kabupaten",cursor.getString(cursor.getColumnIndex(Titik.COLUMN_KABUPATEN)));
+                tf.put("kecamatan",cursor.getString(cursor.getColumnIndex(Titik.COLUMN_KECAMATAN)));
                 titikFilter.add(tf);
             } while (cursor.moveToNext());
         }
@@ -191,6 +203,27 @@ public class DBHelper extends SQLiteOpenHelper{
         db.close();
 
         return titikFilter;
+    }
+
+    public void insertTitikFilter(ArrayList <HashMap<String, String>> tf) {
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+        for(int i=0; i<tf.size(); i++){
+            ContentValues values = new ContentValues();
+            HashMap<String,String> valTF = new HashMap<>();
+            valTF = tf.get(i);
+            values.put(TitikFilter.COLUMN_LATITUDE, valTF.get("latitude"));
+            values.put(TitikFilter.COLUMN_LONGITUDE, valTF.get("longitude"));
+            values.put(TitikFilter.COLUMN_UNIXDATE, valTF.get("unixdate"));
+            values.put(TitikFilter.COLUMN_UNIXDATETIME, valTF.get("unixdatetime"));
+            values.put(TitikFilter.COLUMN_TANGGAL, valTF.get("tanggal"));
+            values.put(TitikFilter.COLUMN_KABUPATEN, valTF.get("kabupaten"));
+            values.put(TitikFilter.COLUMN_KECAMATAN, valTF.get("kecamatan"));
+            db.insert(TitikFilter.TABLE_NAME, null, values);
+        }
+
+        // close db connection
+        db.close();
     }
 
     //HOTSPOT
@@ -465,8 +498,6 @@ public class DBHelper extends SQLiteOpenHelper{
         return statsInput;
     }
 
-
-
     //TSPADE
     public void insertTspade(HashMap<String, String> ts) {
         // get writable database as we want to write data
@@ -484,32 +515,110 @@ public class DBHelper extends SQLiteOpenHelper{
         db.close();
     }
 
-    public List<Tspade> getTspadeByDate(String m, String y) {
-        List<Tspade> spades = new ArrayList<>();
+    public  ArrayList<HashMap<String, String>> getTspadeByDate(String month, String year) {
+        ArrayList<HashMap<String, String>> tspadeFilter = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + Tspade.TABLE_NAME + " WHERE " +
+                Tspade.COLUMN_BULAN + "='" + month + "' AND " + Tspade.COLUMN_TAHUN + "='" + year+"'";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Log.d("String Query SPADE", selectQuery);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> ts = new HashMap<>();
+                ts.put("unixdatetime", cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_UNIXDATETIME)));
+                ts.put("tahun", cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_TAHUN)));
+                ts.put("bulan", cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_BULAN)));
+                tspadeFilter.add(ts);
+            } while (cursor.moveToNext());
+        }
+        // close db connection
+        db.close();
+
+        return tspadeFilter;
+    }
+
+    public List<TvFrequent> getCoordinatesByResultTspade(String unix) {
+        List<TvFrequent> result = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + Tspade.TABLE_NAME + " WHERE " +
-                Tspade.COLUMN_BULAN + "=" + m + " AND " + Tspade.COLUMN_TAHUN + "=" + y;
-
+        String selectQuery = "SELECT * FROM " + TitikFilter.TABLE_NAME + " WHERE " +
+                TitikFilter.COLUMN_UNIXDATETIME + "='" +unix+"' ORDER BY "+TitikFilter.COLUMN_LATITUDE+" ASC";
+        Log.d("QUERY",selectQuery);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Tspade t = new Tspade();
-                t.setUnixdatetime(cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_UNIXDATETIME)));
-                t.setBulan(cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_BULAN)));
-                t.setTahun(cursor.getString(cursor.getColumnIndex(Tspade.COLUMN_TAHUN)));
-                spades.add(t);
+                TvFrequent tf = new TvFrequent();
+                tf.setLatitude(cursor.getDouble(cursor.getColumnIndex(TitikFilter.COLUMN_LATITUDE)));
+                tf.setLongitude(cursor.getDouble(cursor.getColumnIndex(TitikFilter.COLUMN_LONGITUDE)));
+                tf.setKabupaten(cursor.getString(cursor.getColumnIndex(TitikFilter.COLUMN_KABUPATEN)));
+                tf.setKecamatan(cursor.getString(cursor.getColumnIndex(TitikFilter.COLUMN_KECAMATAN)));
+                tf.setTanggal1(unix);
+                tf.setTanggal2("NA");
+                tf.setTanggal3("NA");
+                tf.setTanggal4("NA");
+                result.add(tf);
             } while (cursor.moveToNext());
         }
         // close db connection
         db.close();
         // return notes list
-        return spades;
+        return result;
     }
 
+    public List<TvFrequent> getCoordinatesByResultTspadeWith2Input(String unix1,String unix2) {
+        List<TvFrequent> result = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TitikFilter.TABLE_NAME + " WHERE " +
+                TitikFilter.COLUMN_UNIXDATETIME + "='" + unix1+"'"+ " OR "+ TitikFilter.COLUMN_UNIXDATETIME + "= '"+ unix2+"' ORDER BY "+ TitikFilter.COLUMN_LATITUDE+" ASC";
+        Log.d("QUERY",selectQuery);
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                TvFrequent tf = new TvFrequent();
+                tf.setLatitude(cursor.getDouble(cursor.getColumnIndex(TitikFilter.COLUMN_LATITUDE)));
+                tf.setLongitude(cursor.getDouble(cursor.getColumnIndex(TitikFilter.COLUMN_LONGITUDE)));
+                tf.setKabupaten(cursor.getString(cursor.getColumnIndex(TitikFilter.COLUMN_KABUPATEN)));
+                tf.setKecamatan(cursor.getString(cursor.getColumnIndex(TitikFilter.COLUMN_KECAMATAN)));
+                tf.setTanggal1(unix1);
+                tf.setTanggal2(unix2);
+                tf.setTanggal3("NA");
+                tf.setTanggal4("NA");
+                result.add(tf);
+            } while (cursor.moveToNext());
+        }
+        // close db connection
+        db.close();
+        // return notes list
+        return result;
+    }
+
+    public void insertTvFrequentDate(List<TvFrequent> tfq){
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        for(TvFrequent valTF : tfq){
+            values.put(TvFrequent.COLUMN_LATITUDE, valTF.getLatitude());
+            values.put(TvFrequent.COLUMN_LONGITUDE, valTF.getLongitude());
+            values.put(TvFrequent.COLUMN_KABUPATEN, valTF.getKabupaten());
+            values.put(TvFrequent.COLUMN_KECAMATAN, valTF.getKecamatan());
+            values.put(TvFrequent.COLUMN_TANGGAL1, valTF.getTanggal1());
+            values.put(TvFrequent.COLUMN_TANGGAL2, valTF.getTanggal2());
+            values.put(TvFrequent.COLUMN_TANGGAL3, valTF.getTanggal3());
+            values.put(TvFrequent.COLUMN_TANGGAL4, valTF.getTanggal4());
+            db.insert(TvFrequent.TABLE_NAME, null, values);
+        }
+
+        // close db connection
+        db.close();
+    }
 
 
 }

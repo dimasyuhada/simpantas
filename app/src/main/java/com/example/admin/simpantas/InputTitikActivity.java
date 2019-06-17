@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -40,7 +41,7 @@ public class InputTitikActivity extends AppCompatActivity{
     private List<Titik> titiks = new ArrayList<>();
 
     String time ="",strTahun = "",strBulan = "";
-    ProgressDialog pDialog;
+//    ProgressDialog pDialog;
     TextView lblTitle;
     Button btnProcess, btnPattern, btnCari;
     Spinner spinnerTahun, spinnerBulan;
@@ -66,10 +67,11 @@ public class InputTitikActivity extends AppCompatActivity{
         int valTemp = intent.getExtras().getInt("temp menu");
         Log.d("temp value",String.valueOf(valTemp));
 
+        ProgressDialog pd = new ProgressDialog(InputTitikActivity.this);
+
         ArrayAdapter<CharSequence> aa = ArrayAdapter.createFromResource(this, R.array.arrayTahun, R.layout.support_simple_spinner_dropdown_item);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTahun.setAdapter(aa);
-
         ArrayAdapter<CharSequence> ab = ArrayAdapter.createFromResource(this, R.array.arrayBulan, R.layout.support_simple_spinner_dropdown_item);
         ab.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBulan.setAdapter(ab);
@@ -77,7 +79,7 @@ public class InputTitikActivity extends AppCompatActivity{
         if(valTemp==1){
             lblTitle.setText("INPUT BARU");
             btnCari.setVisibility(View.GONE);
-//            btnPattern.setVisibility(View.GONE);
+            btnPattern.setVisibility(View.GONE);
         }else{
             lblTitle.setText("LIHAT SEKUENS");
             btnProcess.setVisibility(View.GONE);
@@ -88,22 +90,25 @@ public class InputTitikActivity extends AppCompatActivity{
             file = new File(Environment.getExternalStorageDirectory()+"/dbSimpantas/",ab.getItem(spinnerBulan.getSelectedItemPosition())+""+aa.getItem(spinnerTahun.getSelectedItemPosition())+".csv");
             Log.d("FILE NAME",String.valueOf(file));
             if (file.exists()){
-                pDialog = new ProgressDialog(InputTitikActivity.this);
-                pDialog.setMessage("Please wait..\n It takes a while");
-                pDialog.setCancelable(false);
-                pDialog.show();
-
                 strTahun = spinnerTahun.getSelectedItem().toString();
                 strBulan = spinnerBulan.getSelectedItem().toString();
+                btnProcess.setVisibility(View.GONE);
 
-                processReadCSV(file);
+                pd.setMessage("Please Wait...");
+                pd.setCancelable(false);
+                pd.show();
+//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-//                btnPattern.setVisibility(View.VISIBLE);
-                if (!this.isFinishing() && pDialog != null) {
-                    pDialog.dismiss();
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        processReadCSV(file);
+                        pd.dismiss();
+                    }
+                }).start();
+                btnPattern.setVisibility(View.VISIBLE);
             }else{
-                Toast.makeText(InputTitikActivity.this, "file didn't exist. Make sure file in the folder.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputTitikActivity.this, "file didn't exist. Check dataSimpantas folder again.", Toast.LENGTH_SHORT).show();
             }
         });
         btnPattern.setOnClickListener(new View.OnClickListener() {
@@ -111,13 +116,18 @@ public class InputTitikActivity extends AppCompatActivity{
                 Intent titik = new Intent( InputTitikActivity.this, PolaSekuensActivity.class);
                 titik.putExtra("tahunValue",aa.getItem(spinnerTahun.getSelectedItemPosition()));
                 titik.putExtra("bulanValue",ab.getItem(spinnerBulan.getSelectedItemPosition()));
+                titik.putExtra("state",1);
                 startActivity(titik);
             }
         });
 
         btnCari.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                Intent titik = new Intent( InputTitikActivity.this, SpadeResultActivity.class);
+                titik.putExtra("tahunValue",aa.getItem(spinnerTahun.getSelectedItemPosition()));
+                titik.putExtra("bulanValue",ab.getItem(spinnerBulan.getSelectedItemPosition()));
+                titik.putExtra("state",2);
+                startActivity(titik);
             }
         });
     }
@@ -211,16 +221,16 @@ public class InputTitikActivity extends AppCompatActivity{
                     boolean result = db.insertTitik(Double.parseDouble(tokens[0]),Double.parseDouble(tokens[1]),uDate,uDateTime,tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],strBulan,strTahun);
                     if(result){
                         String msg = spinnerTahun.getSelectedItem().toString();
-                        Toast.makeText(InputTitikActivity.this, "Success!!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(InputTitikActivity.this, "Success!!", Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(InputTitikActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(InputTitikActivity.this, "Error!!", Toast.LENGTH_SHORT).show();
                     }
                     Log.d("InputActivity","Just Created: "+readTitik);
                 }
             } catch(IOException e){
-                if (!this.isFinishing() && pDialog != null) {
-                    pDialog.dismiss();
-                }
+//                if (!this.isFinishing() && pDialog != null) {
+//                    pDialog.dismiss();
+//                }
                 Log.d("InputActivity","Error Reading on the line " + line, e);
                 e.printStackTrace();
             } catch (ParseException e) {

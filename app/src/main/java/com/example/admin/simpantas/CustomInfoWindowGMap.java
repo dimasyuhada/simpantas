@@ -1,5 +1,6 @@
 package com.example.admin.simpantas;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -21,6 +22,7 @@ public class CustomInfoWindowGMap implements GoogleMap.InfoWindowAdapter {
         return null;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getInfoContents(Marker marker) {
         View view = ((Activity)context).getLayoutInflater().inflate(R.layout.list_infowindow,null);
@@ -30,12 +32,14 @@ public class CustomInfoWindowGMap implements GoogleMap.InfoWindowAdapter {
 //        TextView tvLongitude = view.findViewById(R.id.txLongitude);
         TextView tvConfidence = view.findViewById(R.id.txConfidence);
         TextView tvKecamatanKabupaten = view.findViewById(R.id.txKecamatanKabupaten);
+        TextView tvTanggal = view.findViewById(R.id.txTanggal);
 
         tvProvinsi.setText(marker.getTitle());
         tvKecamatanKabupaten.setText(marker.getSnippet());
 
         Hotspot hs = (Hotspot) marker.getTag();
-        tvConfidence.setText("Confidence : "+String.valueOf(hs.getConfidence()));
+        tvConfidence.setText("Confidence : "+String.valueOf(hs.getConfidence())+"%");
+        tvTanggal.setText("Tanggal Kejadian : "+hs.getTanggal());
 
         return view;
     }

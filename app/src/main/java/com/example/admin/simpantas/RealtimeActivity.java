@@ -81,7 +81,9 @@ public class RealtimeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 processSequence();
                 Intent i = new Intent(RealtimeActivity.this, VisualisasiActivity.class);
+                int x = 2;
                 i.putExtra("resultObject", (Serializable) todayHotspot);
+                i.putExtra("menuIdentifier",x);
                 startActivity(i);
             }
         });
@@ -196,6 +198,17 @@ public class RealtimeActivity extends AppCompatActivity {
                             coordinateList.add(koordinat);
                             db.insertHotspotUpdateWithArray(koordinat);
                         }
+                        for (int x=0;x<coordinateList.size();x++){
+                            coordinateList.get(x).put("latitude","Latitude : "+coordinateList.get(x).get("latitude"));
+                            coordinateList.get(x).put("longitude","Longitude : "+coordinateList.get(x).get("longitude"));
+                            coordinateList.get(x).put("tanggal","Tanggal (yyyymmdd): "+coordinateList.get(x).get("tanggal"));
+                            coordinateList.get(x).put("confidence","Confidence : "+coordinateList.get(x).get("confidence"));
+                            coordinateList.get(x).put("kawasan","Kawasan : "+coordinateList.get(x).get("kawasan"));
+                            coordinateList.get(x).put("desa","Desa : "+coordinateList.get(x).get("desa"));
+                            coordinateList.get(x).put("kecamatan","Kecamatan : "+coordinateList.get(x).get("kecamatan"));
+                            coordinateList.get(x).put("kabupatenKota","Kabupaten/Kota : "+coordinateList.get(x).get("kabupatenKota"));
+                            coordinateList.get(x).put("provinsi","Provinsi : "+coordinateList.get(x).get("provinsi"));
+                        }
 
                     }else{
                         bMap.setVisibility(View.GONE);
@@ -274,7 +287,6 @@ public class RealtimeActivity extends AppCompatActivity {
         replaceInfo=replaceInfo.replaceAll("AQUA","");
         replaceInfo=replaceInfo.replaceAll("TERRA","");
         replaceInfo=replaceInfo.replaceAll("NPP","");
-
         replaceInfo=replaceInfo.replaceAll("Tanggal","");
         replaceInfo=replaceInfo.replaceAll("Latitude","");
         replaceInfo=replaceInfo.replaceAll("Longitude","");
@@ -318,7 +330,7 @@ public class RealtimeActivity extends AppCompatActivity {
                                 if ((Double.compare(todayHotspot.get(i).getLatitude(),hpListDay3.get(l).getLatitude())==0) && (Double.compare(todayHotspot.get(i).getLongitude(),hpListDay3.get(l).getLongitude())==0)){
                                     todayHotspot.get(i).setTemp(3);
                                     for(int m=0; m<hpListDay4.size(); m++){
-                                        if ((Double.compare(todayHotspot.get(i).getLatitude(),hpListDay3.get(m).getLatitude())==0) && (Double.compare(todayHotspot.get(i).getLongitude(),hpListDay3.get(m).getLongitude())==0)){
+                                        if ((Double.compare(todayHotspot.get(i).getLatitude(),hpListDay4.get(m).getLatitude())==0) && (Double.compare(todayHotspot.get(i).getLongitude(),hpListDay4.get(m).getLongitude())==0)){
                                             todayHotspot.get(i).setTemp(4);
                                         }
                                     }
