@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SpadeResultTextActivity">
+
+    <TextView
+        android:id="@+id/titleProcess"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:paddingTop="56dp"
+        android:paddingBottom="30dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:text="@string/titleProcessSequence">
+    </TextView>
+
+    <TextView
+        android:id="@+id/sumProcess"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:paddingBottom="50dp"
+        android:textStyle="bold"
+        android:textSize="15sp">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btnVis"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="20sp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="#fff"
+            android:text="VISUALISASI POLA SEKUENS" />
+
+    </LinearLayout>
+
+</LinearLayout>

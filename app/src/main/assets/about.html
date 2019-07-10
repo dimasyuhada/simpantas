@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: #5190ca;
+    color: white;
+}
+
+.panel {
+    padding: 0 18px;
+	padding-bottom: 8px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+</style>
+</head>
+<body>
+
+<h2 style="text-align: center">ABOUT SIMPANTAS</h2>
+<!--<p>Click on the buttons to open the collapsible content.</p>-->
+
+<button class="accordion">1. Apa itu SIMPANTAS ?</button>
+<div class="panel">
+  <p>Aplikasi pemantau dan pengembangan pola sekuens titik panas.</p>
+</div>
+
+<button class="accordion">2. Fitur apa saja yang terdapat pada aplikasi SIMPANTAS ?</button>
+<div class="panel">
+  <p>a. <b><i>Input data titik panas.</b></i> Fitur ini memungkinkan pengguna untuk unggah fail data titik panas berformat .csv kedalam aplikasi SIMPANTAS, yang kemudian dapat dicari pola sekuens titik panas dari data tersebut lalu divisualisasikan.</p>
+  <p>b. <b><i> Realtime Hotspot.</b></i> Fitur ini mendapatkan data titik panas, membangkitkan pola sekuens titik panas, dan memvisualisasikannya secara online.</p>
+</div>
+
+<button class="accordion">3. Ketentuan dalam menggunakan aplikasi SIMPANTAS ?</button>
+<div class="panel">
+  <p>a. Pastikan akses <i>storage</i> pada perangkat pengguna dalam posisi <i>enabled</i></p>
+  <p>b. Pastikan perangkat pengguna terkoneksi dengan internet</p>
+  <p>c. Buat direktori/folder pada perangkat dengan nama dbSimpantas</p>
+</div>
+
+<button class="accordion">4. Username & password aplikasi Simpantas ?</button>
+<div class="panel">
+  <p>Username : Admin</p>
+  <p>Password : Admin</p>
+</div>
+
+<button class="accordion">5. Perbedaan warna pada visualisasi titik panas?</button>
+<div class="panel">
+  <p>a. Titik api berwarna kuning : Kemunculan titik panas pertama kali</p>
+  <p>b. Titik api berwarna jingga : Kemunculan titik panas kedua kali berturut-turut</p>
+  <p>b. Titik api berwarna merah : Kemunculan titik panas ketiga kali atau lebih secara berturut-turut</p>
+</div>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
+</body>
+</html>

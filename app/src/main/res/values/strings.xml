@@ -35,6 +35,7 @@
     <string name="btn_transform">Transform</string>
     <string name="btnSpade">SPADE</string>
     <string name="minsupHint">Input MinSup (0–1)</string>
+    <string name="titleProcessSequence">PROSES SEKUENS BERHASIL! \nJUMLAH SEKUENS :</string>
 
     <string-array name="arrayTahun">
         <item>2012</item>

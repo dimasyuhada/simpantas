@@ -34,6 +34,7 @@ public class SpadeResultActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> spadeList;
     List<TvFrequent> frequentVisualizationFix = new ArrayList<>();
 
+
     private DBHelper db;
     private ProgressDialog pDialog;
     ListView lv;
@@ -105,7 +106,6 @@ public class SpadeResultActivity extends AppCompatActivity {
                         HashMap<String, String> spades = new HashMap<>();
                         spades.put("unixdatetime",nextLine[0]);
                         Log.d("RESULT TERLIHAT? ",nextLine[0]);
-
                         spades.put("month",bulanValue);
                         spades.put("year",tahunValue);
                         spadeList.add(spades);
@@ -180,8 +180,10 @@ public class SpadeResultActivity extends AppCompatActivity {
                     for (int i=0; i<frequentVisualization.size(); i++){
                         if (i==0) continue;
                         if ((frequentVisualization.get(i-1).getLatitude()==frequentVisualization.get(i).getLatitude())&&(frequentVisualization.get(i-1).getLongitude()==frequentVisualization.get(i).getLongitude())){
+                            frequentVisualization.get(i).setTanggal2(frequentVisualization.get(i-1).getTanggal1());
                             frequentVisualizationFix.add(frequentVisualization.get(i));
                         }else{
+
                         }
                     }
                     frequentVisualization.clear();
@@ -190,9 +192,6 @@ public class SpadeResultActivity extends AppCompatActivity {
             //INSERT THE LIST TO DB
             db.insertTvFrequentDate(frequentVisualizationFix);
         }
-
-
-
     }
 
 

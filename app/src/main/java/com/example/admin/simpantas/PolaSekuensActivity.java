@@ -1,53 +1,29 @@
 package com.example.admin.simpantas;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.opencsv.CSVWriter;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import ca.pfv.spmf.algorithms.sequentialpatterns.clasp_AGP.idlists.creators.IdListCreator;
-import ca.pfv.spmf.algorithms.sequentialpatterns.gsp_AGP.items.SequenceDatabase;
-import ca.pfv.spmf.algorithms.sequentialpatterns.gsp_AGP.items.creators.AbstractionCreator;
-import ca.pfv.spmf.algorithms.sequentialpatterns.gsp_AGP.items.creators.AbstractionCreator_Qualitative;
 import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.AlgoSPADE;
 import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.candidatePatternsGeneration.CandidateGenerator;
 import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.candidatePatternsGeneration.CandidateGenerator_Qualitative;
 import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.idLists.creators.IdListCreator_Bitmap;
-import ca.pfv.spmf.algorithms.sequentialpatterns.spade_spam_AGP.idLists.creators.IdListCreator_FatBitmap;
-import ca.pfv.spmf.algorithms.sequentialpatterns.spam.Candidate;
-import ca.pfv.spmf.gui.plot.Plot;
-import de.siegmar.fastcsv.reader.CsvParser;
-import de.siegmar.fastcsv.reader.CsvReader;
-import de.siegmar.fastcsv.reader.CsvRow;
 
 public class PolaSekuensActivity extends AppCompatActivity{
 
@@ -97,23 +73,27 @@ public class PolaSekuensActivity extends AppCompatActivity{
         });
         bMinSup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                try {
-                    String strMinsup = inputMinsup.getText().toString();
-                    float dMinsup = Float.parseFloat(strMinsup);
-                    doSpade(dMinsup,tahunValue);
+                String strMinsup = inputMinsup.getText().toString();
+                float dMinsup = Float.parseFloat(strMinsup);
+                if (dMinsup <= 1.0){
+                    try {
+                        doSpade(dMinsup,tahunValue);
 
-                    Intent spade = new Intent( PolaSekuensActivity.this, SpadeResultActivity.class);
-                    spade.putExtra("tahunValue",tahunValue);
-                    spade.putExtra("bulanValue",bulanValue);
-                    spade.putExtra("state",state);
-                    startActivity(spade);
+                        Intent spade = new Intent( PolaSekuensActivity.this, SpadeResultActivity.class);
+                        spade.putExtra("tahunValue",tahunValue);
+                        spade.putExtra("bulanValue",bulanValue);
+                        spade.putExtra("state",state);
+                        startActivity(spade);
 
-                } catch (IOException e) {
-                    Log.d("Error SPADE : ",e.getMessage());
-                    e.printStackTrace();
-                } catch (NumberFormatException ignored){
-                    Log.d("Error Min Support Input",ignored.getMessage());
-                    ignored.printStackTrace();
+                    } catch (IOException e) {
+                        Log.d("Error SPADE : ",e.getMessage());
+                        e.printStackTrace();
+                    } catch (NumberFormatException ignored){
+                        Log.d("Error Min Support Input",ignored.getMessage());
+                        ignored.printStackTrace();
+                    }
+                }else{
+                    Toast.makeText(PolaSekuensActivity.this, "Nilai Minimum Support harus diantara 0 hingga 1", Toast.LENGTH_SHORT).show();
                 }
             }
         });

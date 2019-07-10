@@ -587,8 +587,12 @@ public class DBHelper extends SQLiteOpenHelper{
                 tf.setLongitude(cursor.getDouble(cursor.getColumnIndex(TitikFilter.COLUMN_LONGITUDE)));
                 tf.setKabupaten(cursor.getString(cursor.getColumnIndex(TitikFilter.COLUMN_KABUPATEN)));
                 tf.setKecamatan(cursor.getString(cursor.getColumnIndex(TitikFilter.COLUMN_KECAMATAN)));
-                tf.setTanggal1(unix1);
-                tf.setTanggal2(unix2);
+                tf.setUnix1(unix1);
+                tf.setUnix2(unix2);
+                tf.setUnix3("NA");
+                tf.setUnix4("NA");
+                tf.setTanggal1(cursor.getString(cursor.getColumnIndex(TitikFilter.COLUMN_TANGGAL)));
+                tf.setTanggal2("NA");
                 tf.setTanggal3("NA");
                 tf.setTanggal4("NA");
                 result.add(tf);
@@ -609,6 +613,10 @@ public class DBHelper extends SQLiteOpenHelper{
             values.put(TvFrequent.COLUMN_LONGITUDE, valTF.getLongitude());
             values.put(TvFrequent.COLUMN_KABUPATEN, valTF.getKabupaten());
             values.put(TvFrequent.COLUMN_KECAMATAN, valTF.getKecamatan());
+            values.put(TvFrequent.COLUMN_UNIX1, valTF.getUnix1());
+            values.put(TvFrequent.COLUMN_UNIX2, valTF.getUnix2());
+            values.put(TvFrequent.COLUMN_UNIX3, valTF.getUnix3());
+            values.put(TvFrequent.COLUMN_UNIX4, valTF.getUnix4());
             values.put(TvFrequent.COLUMN_TANGGAL1, valTF.getTanggal1());
             values.put(TvFrequent.COLUMN_TANGGAL2, valTF.getTanggal2());
             values.put(TvFrequent.COLUMN_TANGGAL3, valTF.getTanggal3());
@@ -619,6 +627,8 @@ public class DBHelper extends SQLiteOpenHelper{
         // close db connection
         db.close();
     }
+
+
 
 
 }
